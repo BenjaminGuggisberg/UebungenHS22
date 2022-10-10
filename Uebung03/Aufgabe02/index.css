@@ -1,0 +1,17 @@
+#bod {
+    position: relative;
+    height: 590px;
+    border: 1px solid green;
+}
+
+#di {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color:rgb(15, 15, 138);
+}
+
+#date {
+    text-align: center;
+}
