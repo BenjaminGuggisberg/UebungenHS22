@@ -1,0 +1,8 @@
+html {
+    display: flex;
+    justify-content: center;
+    padding-top: 70px;
+    margin: auto;
+    background-color: aquamarine;
+    text-align: center;
+}
