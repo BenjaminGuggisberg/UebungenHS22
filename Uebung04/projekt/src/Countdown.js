@@ -17,11 +17,11 @@ class Countdown extends Component {
         this.setState({count: this.state.count-1});
         
         if (this.state.count == this.props.countdown) {
-            this.setState({t: "timer running..."});
+            this.setState({t: "time remaining:"});
         }
 
         if (this.state.count <= 1) {
-            this.setState({t: "fertig!"});
+            this.setState({t: "download finished!"});
             this.setState({count: ""});
             clearInterval(this.interval);
             this.interval = null;
@@ -41,9 +41,9 @@ class Countdown extends Component {
 
     render(){
         return(<>
-        <h4>Countdown: {this.props.countdown} Sekunden</h4>
-        {this.state.count}<br/><br/>
-        {this.state.t}<br/>
+        <h4>Download.exe - estimated time for download: {this.props.countdown} Seconds</h4>
+        {this.state.t}<br/><br/>
+        {this.state.count}<br/>
         <button onClick={this.decrease}>Click!</button>
         </>)
     }
