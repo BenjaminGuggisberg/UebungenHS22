@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useId} from 'react';
 import  Grid  from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -17,7 +17,11 @@ function App() {
   const [open, setOpen] = React.useState(false);
 
   // const [visible, setVisibility] = useState(true);
-
+  // function validCoord(lat, lon, crs=lv95) {
+  //   if lat >= 200 {
+  //     fdk
+  //   };
+  // }
 
   function handleOpen() {
     setOpen(!open);
@@ -53,52 +57,68 @@ function App() {
   console.log(data)
   
   return <>
-    <AppBar position='sticky'>Coordinate Transformation Tool</AppBar>
-    <Grid>
-      <Grid item xs={12} md={6}>
-        <TextField label="easting" variant="outlined" onChange= { (event) => {setLatitude(event.target.value)} }/>
-        <TextField label="northing" variant="outlined" onChange= { (event) => {setLongitude(event.target.value)} }/>
+  <div className="body">
+    <AppBar color='secondary' position='sticky' className="appbar">Coordinate Transformation Tool</AppBar>
+    <div className='main'>
+      <Grid>
+        <Grid item xs={12} className="sowas">
+          <div className="feld1">
+            <TextField type="number" label="easting" variant="filled" color="secondary" onChange= { (event) => {setLatitude(event.target.value)} } id="halo"/>
+            <TextField type="number" label="northing" variant="filled" color="secondary" onChange= { (event) => {setLongitude(event.target.value)} } className="Feld2"/>
+          </div>
+        </Grid><br/><br/>
+        <Grid item xs={12}>
+          <div className="dropdown">
+            <div className="wrapper">
+              <Button color="secondary" variant="contained" onClick={handleOpen} className="menu">Choose Transformation</Button>
+            </div>
+            {open ? (
+              <ul className="menu">
+                <li className="menu-item">
+                  <Button 
+                  color="secondary"
+                  variant="contained"
+                  disabled={(Math.abs(lat) > 180) || (Math.abs(lng) > 90) ? true : false}
+                  onClick={ () => wgs84tolv95() }
+                  >WGS84 zu LV95</Button>
+                </li>
+                <li className="menu-item">
+                  <Button 
+                  color="secondary"
+                  variant="contained"
+                  disabled={(Math.abs(lat) > 2540398) || (Math.abs(lat) < 2480555) || (Math.abs(lng) > 1300660) || (Math.abs(lng) < 1070927) ? true : false }
+                  onClick={ () => lv95towgs84() }
+                  >LV95 zu WGS84</Button>
+                </li>
+                <li className='menu-item'>
+                  <Button 
+                  color="secondary"
+                  variant='contained' 
+                  disabled={(Math.abs(lat) > 2540398) || (Math.abs(lat) < 2480555) || (Math.abs(lng) > 1300660) || (Math.abs(lng) < 1070927) ? true : false }
+                  onClick={ () => lv95tolv03() }
+                  >LV95 zu LV03</Button>
+                </li>
+              </ul>
+            ) : null}
+        </div>
+        </Grid>
+        {/* <Grid item xs={12}>
+          <TextField class="output" readOnly/>
+        </Grid> */}
       </Grid><br/><br/>
-      <Grid item xs={12}>
-        <div className="dropdown">
-        <Button variant="contained" onClick={handleOpen} className="menu">Dropdown</Button>
-        {open ? (
-          <ul className="menu">
-            <li className="menu-item">
-              <Button variant="contained" onClick={ () => wgs84tolv95() }>WGS84 zu LV95</Button>
-            </li>
-            <li className="menu-item">
-              <Button variant="contained" onClick={ () => lv95towgs84() }>LV95 zu WGS84</Button>
-            </li>
-            <li className='="menu-item'>
-              <Button variant='contained' onClick={ () => lv95tolv03() }>LV95 zu LV03</Button>
-            </li>
-          </ul>
-        ) : null}
-      </div>
-      </Grid>
-      {/* <Grid item xs={12}>
-        <TextField class="output" readOnly/>
-      </Grid> */}
-    </Grid><br/><br/>
-        
-    
-    {loading &&
-      <h1>Bitte warten... Die Daten werden geladen!</h1>
-    }
 
-    {error &&
-      <h4>Fehler: Überprüfe deine Wahl der Koordinatentransformation oder versichere dich, dass du mit dem Internet verbunden bist.</h4>
-    }
+      {data &&
+          <>
+            <Grid>
+              <TextField value={data.ost} variant="outlined" label="Easting" readOnly></TextField>
+              <TextField value={data.nord} variant="outlined" label="Northin" readOnly></TextField>
+            </Grid>
+      </>
+      }
+    </div>
 
-    {data &&
-    <>
-      Daten sind geladen!
-      <div>{data.ost}</div>
-      <div>{data.nord}</div>
-    </>
-    }
-    </>
+  </div>
+</> 
 }
 
 export default App;
